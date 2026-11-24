@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Yahor Rynashko - VideoMaker & Motion Designer</title>
+    
+    <!-- Шрифты в стиле швейцарской типографики -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..800&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-paper: #dadada;
+            --ink-black: #111111;
+            --white: #ffffff;
+            --card-grey: #cdcdcd;
+            --scale: 1;
+            --stage-h: 900px;
+            --ease-wow: cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        html, body {
+            background-color: var(--bg-paper);
+            color: var(--ink-black);
+            font-family: "Inter Tight", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            font-weight: 500;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a, button {
+            color: inherit;
+            text-decoration: none;
+            font-family: inherit;
+        }
+
+        /* Контейнер-сцена на всю ширину экрана */
+        .hero-wrapper {
+            position: relative;
+            width: 100%;
+            height: calc(var(--stage-h) * var(--scale));
+            overflow: hidden;
+            background-color: var(--bg-paper);
+        }
+
+        .stage {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 1440px;
+            height: var(--stage-h);
+            transform: scale(var(--scale));
+            transform-origin: 0 0;
+        }
+
+        .stage > * {
+            position: absolute;
+        }
+
+        /* 1. Центральное фото: макушка не режется сверху, низ плавно растворяется */
+        .hero-photo {
+            left: 345px;
+            top: 30px;
+            width: 750px;
+            height: 870px;
+            -webkit-mask-image:
+                linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent),
+                linear-gradient(180deg, #000 0%, #000 82%, transparent 100%);
+            -webkit-mask-composite: source-in;
+            mask-image:
+                linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent),
+                linear-gradient(180deg, #000 0%, #000 82%, transparent 100%);
+            mask-composite: intersect;
+            pointer-events: none;
+        }
+
+        .hero-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: 50% 6%;
+            display: block;
+            filter: grayscale(1) contrast(1.08);
+            transition: transform 0.15s ease-out;
+        }
+
+        /* 2. Верхняя навигация с плавающим индикатором */
+        .nav-pill {
+            left: 57px;
+            top: 48px;
+            height: 48px;
+            background: var(--white);
+            border-radius: 99px;
+            display: flex;
+            padding: 4px;
+            font-size: 14px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+        }
+
+        .nav-pill a {
+            position: relative;
+            z-index: 2;
+            padding: 0 22px;
+            display: flex;
+            align-items: center;
+            border-radius: 99px;
+            transition: color 0.25s ease;
+        }
+
+        .nav-pill a.active {
+            color: var(--white);
+        }
+
+        .nav-blob {
+            position: absolute;
+            top: 4px;
+            bottom: 4px;
+            left: 4px;
+            background: var(--ink-black);
+            border-radius: 99px;
+            z-index: 1;
+            transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), width 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        /* Кнопка связи в правом верхнем углу */
+        .btn-dark {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: var(--ink-black);
+            color: var(--white);
+            border-radius: 99px;
+            font-size: 14px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn-dark:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+        }
+
+        .header-contact {
+            left: 1237px;
+            top: 49px;
+            width: 144px;
+            height: 46px;
+        }
+
+        /* 3. Левая колонка: только VIDEO EDITOR и подпись роли */
+        .hero-title {
+            left: 57px;
+            top: 235px;
+            font-family: "Archivo", sans-serif;
+            font-stretch: 104%;
+            font-variation-settings: "wdth" 104;
+            font-weight: 640;
+            font-size: 94px;
+            line-height: 0.88;
+            letter-spacing: -0.06em;
+            text-transform: uppercase;
+        }
+
+        .hero-title .line {
+            display: block;
+            overflow: hidden;
+            padding-bottom: 6px;
+        }
+
+        .hero-title .line span {
+            display: block;
+            animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(105%); }
+            to { transform: translateY(0); }
+        }
+
+        .role-subtitle {
+            left: 57px;
+            top: 455px;
+            width: 280px;
+            font-size: 16px;
+            line-height: 1.4;
+            font-weight: 600;
+            color: var(--ink-black);
+        }
+
+        .availability-status {
+            left: 57px;
+            top: 525px;
+            display: inline-flex;
+            align-items: center;
+            font-size: 14px;
+            color: rgba(17, 17, 17, 0.78);
+        }
+
+        .availability-status span {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: var(--ink-black);
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: pulseDot 2s infinite;
+        }
+
+        @keyframes pulseDot {
+            50% { opacity: 0.25; }
+        }
+
+        /* 4. Правая колонка: что делаю, кнопка RYNASHKO и описание навыков под ней */
+        .right-doing {
+            left: 1030px;
+            top: 235px;
+            width: 350px;
+        }
+
+        .right-doing .label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: rgba(17, 17, 17, 0.55);
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .right-doing p {
+            font-size: 16px;
+            line-height: 1.45;
+            color: var(--ink-black);
+        }
+
+        .rynashko-widget {
+            left: 1030px;
+            top: 415px;
+            width: 350px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .glass-nameplate-btn {
+            width: 100%;
+            height: 70px;
+            border-radius: 12px;
+            background: rgba(24, 24, 24, 0.78);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.24);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 22px;
+            color: var(--white);
+            cursor: pointer;
+            transition: transform 0.2s ease, background 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .glass-nameplate-btn:hover {
+            transform: translateY(-2px);
+            background: rgba(17, 17, 17, 0.92);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.16);
+        }
+
+        .glass-nameplate-btn:active {
+            transform: translateY(0);
+        }
+
+        .rynashko-left {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 2px;
+        }
+
+        .rynashko-left b {
+            font-family: "Archivo", sans-serif;
+            font-stretch: 125%;
+            font-variation-settings: "wdth" 125;
+            font-weight: 600;
+            font-size: 24px;
+            letter-spacing: 0.02em;
+            line-height: 1;
+        }
+
+        .rynashko-mode-hint {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.68);
+            letter-spacing: 0.03em;
+        }
+
+        .rynashko-toggle-badge {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 5px 12px;
+            border-radius: 99px;
+            background: rgba(255, 255, 255, 0.16);
+            color: var(--white);
+            letter-spacing: 0.04em;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+
+        .glass-nameplate-btn:hover .rynashko-toggle-badge {
+            background: var(--white);
+            color: var(--ink-black);
+        }
+
+        .skills-under-btn {
+            background: rgba(255, 255, 255, 0.58);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(17, 17, 17, 0.1);
+            border-radius: 12px;
+            padding: 16px 18px;
+        }
+
+        .skills-category-title {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--ink-black);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .skills-category-title span {
+            font-size: 11px;
+            font-weight: 500;
+            opacity: 0.6;
+        }
+
+        .skills-desc-text {
+            font-size: 14px;
+            line-height: 1.45;
+            color: rgba(17, 17, 17, 0.85);
+            margin-bottom: 12px;
+        }
+
+        .skills-indicators {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .skill-indicator {
+            border: 1px solid rgba(17, 17, 17, 0.18);
+            background: transparent;
+            color: rgba(17, 17, 17, 0.65);
+            font-size: 11px;
+            font-weight: 500;
+            padding: 4px 10px;
+            border-radius: 99px;
+            transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+        }
+
+        .skill-indicator.active {
+            background: var(--ink-black);
+            color: var(--white);
+            border-color: var(--ink-black);
+        }
+
+        /* Софт внизу по центру */
+        .software-logos {
+            left: 440px;
+            top: 815px;
+            width: 560px;
+            display: flex;
+            justify-content: space-between;
+            color: var(--ink-black);
+            font-family: "Archivo", sans-serif;
+            font-stretch: 112%;
+            font-variation-settings: "wdth" 112;
+            font-weight: 600;
+            font-size: 17px;
+            opacity: 0.85;
+        }
+
+        /* Адаптив под мобильные устройства для секции 1 */
+        @media (max-width: 760px) {
+            .hero-wrapper {
+                width: 100%;
+                height: auto;
+                overflow: visible;
+            }
+            .stage {
+                position: relative;
+                width: 100%;
+                height: auto;
+                transform: none !important;
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+                padding: 16px 16px 32px;
+            }
+            .stage > * {
+                position: relative !important;
+                left: auto !important;
+                right: auto !important;
+                top: auto !important;
+            }
+            .nav-pill {
+                align-self: flex-start;
+                font-size: 13px;
+            }
+            .nav-pill a {
+                padding: 0 14px;
+            }
+            .header-contact {
+                position: absolute !important;
+                right: 16px !important;
+                top: 16px !important;
+                width: 44px;
+                height: 44px;
+                font-size: 0;
+            }
+            .header-contact::after {
+                content: "↗";
+                font-size: 18px;
+            }
+            .hero-title {
+                font-size: 62px;
+                order: 1;
+                width: auto;
+            }
+            .role-subtitle {
+                order: 2;
+                width: auto;
+            }
+            .availability-status {
+                order: 3;
+            }
+            .hero-photo {
+                order: 4;
+                width: calc(100% + 32px);
+                margin: 0 -16px;
+                height: 450px;
+                -webkit-mask-image: linear-gradient(180deg, #000 80%, transparent 100%);
+                mask-image: linear-gradient(180deg, #000 80%, transparent 100%);
+            }
+            .hero-photo img {
+                object-position: 50% 6%;
+            }
+            .right-doing {
+                order: 5;
+                width: 100%;
+            }
+            .rynashko-widget {
+                order: 6;
+                width: 100%;
+            }
+            .software-logos {
+                order: 7;
+                width: 100%;
+                font-size: 12px;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+        }
+
+        /* =========================================================
+           СЕКЦИЯ 2: МОИ ДОСТИЖЕНИЯ (минимализм + мощное вытеснение)
+           ========================================================= */
+        .achievements-section {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            min-height: 100vh;
+            background: linear-gradient(
+                180deg,
+                var(--bg-paper) 0%,
+                #8f8f8f 6%,
+                #3c3c3e 14%,
+                var(--ink-black) 22%,
+                var(--ink-black) 100%
+            );
+            color: #f4f4f4;
+            padding: 150px 24px 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .achievements-container {
+            width: 100%;
+            max-width: 1440px;
+            min-width: 0;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 44px;
+        }
+
+        .achievements-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 24px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+        }
+
+        .achievements-title {
+            font-family: "Archivo", sans-serif;
+            font-stretch: 104%;
+            font-variation-settings: "wdth" 104;
+            font-weight: 640;
+            font-size: clamp(42px, 5.5vw, 76px);
+            line-height: 0.9;
+            letter-spacing: -0.05em;
+            text-transform: uppercase;
+            color: var(--white);
+        }
+
+        .achievements-subtitle {
+            max-width: 360px;
+            font-size: 14px;
+            line-height: 1.45;
+            color: rgba(244, 244, 244, 0.72);
+            text-align: right;
+        }
+
+        /* Ряд карточек достижений на Flexbox */
+        .achievements-list {
+            display: flex;
+            flex-direction: row;
+            gap: 18px;
+            align-items: stretch;
+        }
+
+        .achievement-card {
+            flex: 1 1 0;
+            min-width: 0;
+            background: #17171b;
+            border: 1px solid rgba(255, 255, 255, 0.11);
+            border-radius: 14px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            position: relative;
+            transform: translateX(0) scale(1);
+            transition:
+                flex 0.65s var(--ease-wow),
+                transform 0.65s var(--ease-wow),
+                opacity 0.5s var(--ease-wow),
+                border-color 0.35s ease,
+                background-color 0.45s ease,
+                box-shadow 0.55s var(--ease-wow);
+        }
+
+        .achievement-card:hover {
+            transform: translateY(-6px) scale(1.01);
+            border-color: rgba(255, 255, 255, 0.32);
+            box-shadow: 0 18px 38px rgba(0, 0, 0, 0.45);
+        }
+
+        /* Когда одна карточка раскрыта: остальные карточки сдвигаются и сжимаются */
+        .achievements-list.has-expanded {
+            gap: 12px;
+        }
+
+        .achievements-list.has-expanded .achievement-card {
+            flex: 0.42 1 0;
+            opacity: 0.48;
+            background: #121215;
+            border-color: rgba(255, 255, 255, 0.06);
+            box-shadow: none;
+        }
+
+        /* Карточки левее раскрытой чуть сдвигаются влево */
+        .achievements-list.has-expanded .achievement-card.is-pushed-left {
+            transform: translateX(-8px) scale(0.97);
+        }
+
+        /* Карточки правее раскрытой чуть сдвигаются вправо */
+        .achievements-list.has-expanded .achievement-card.is-pushed-right {
+            transform: translateX(8px) scale(0.97);
+        }
+
+        .achievements-list.has-expanded .achievement-card:hover {
+            opacity: 0.85;
+            transform: translateY(-4px) scale(0.99);
+        }
+
+        /* Раскрытая карточка вытесняет соседей и занимает максимум пространства */
+        .achievements-list.has-expanded .achievement-card.is-expanded {
+            flex: 3.35 1 0;
+            opacity: 1;
+            transform: translateX(0) translateY(-6px) scale(1.015);
+            background: #1f1f25;
+            border-color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 28px 65px rgba(0, 0, 0, 0.7);
+            z-index: 3;
+        }
+
+        .achievement-visual {
+            height: 150px;
+            background: linear-gradient(135deg, #292930 0%, #131316 100%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 18px;
+            transition: height 0.55s var(--ease-wow), background 0.45s ease;
+        }
+
+        .achievement-card.is-expanded .achievement-visual {
+            height: 170px;
+            background: linear-gradient(135deg, #363640 0%, #18181d 100%);
+        }
+
+        .achievement-badge-num {
+            position: absolute;
+            top: 14px;
+            left: 16px;
+            font-family: "Archivo", sans-serif;
+            font-weight: 700;
+            font-size: 12px;
+            letter-spacing: 0.06em;
+            color: rgba(255, 255, 255, 0.55);
+        }
+
+        .achievement-state-hint {
+            position: absolute;
+            top: 14px;
+            right: 16px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font-size: 13px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.45s var(--ease-wow), background 0.25s ease, color 0.25s ease;
+        }
+
+        .achievement-card.is-expanded .achievement-state-hint {
+            background: var(--white);
+            color: var(--ink-black);
+            border-color: var(--white);
+            transform: rotate(90deg);
+        }
+
+        .achievement-icon {
+            width: 68px;
+            height: 68px;
+            border-radius: 50%;
+            background: var(--bg-paper);
+            color: var(--ink-black);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: "Archivo", sans-serif;
+            font-weight: 700;
+            font-size: 21px;
+            letter-spacing: -0.03em;
+            flex-shrink: 0;
+            transition: transform 0.55s var(--ease-wow), background 0.3s ease;
+        }
+
+        .achievement-card.is-expanded .achievement-icon {
+            transform: scale(1.12);
+            background: var(--white);
+        }
+
+        .achievement-body {
+            padding: 22px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            flex: 1;
+        }
+
+        /* В закрытом состоянии заголовок остаётся компактным и читаемым */
+        .achievement-card-title {
+            font-family: "Archivo", sans-serif;
+            font-weight: 600;
+            font-size: 19px;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            color: var(--white);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: font-size 0.45s var(--ease-wow), white-space 0.2s ease;
+        }
+
+        .achievement-card.is-expanded .achievement-card-title {
+            font-size: 26px;
+            white-space: normal;
+            overflow: visible;
+            margin-bottom: 12px;
+        }
+
+        /* Подробности полностью скрыты, пока карточка закрыта */
+        .achievement-details {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transform: translateY(14px);
+            transition:
+                max-height 0.6s var(--ease-wow),
+                opacity 0.4s ease 0.12s,
+                transform 0.55s var(--ease-wow);
+        }
+
+        .achievement-card.is-expanded .achievement-details {
+            max-height: 320px;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .achievement-card-desc {
+            font-size: 15px;
+            line-height: 1.5;
+            color: rgba(244, 244, 244, 0.88);
+            margin-bottom: 14px;
+        }
+
+        .achievement-extra-box {
+            padding-top: 14px;
+            border-top: 1px solid rgba(255, 255, 255, 0.14);
+            margin-bottom: 16px;
+        }
+
+        .achievement-extra-box p {
+            font-size: 13.5px;
+            line-height: 1.5;
+            color: rgba(244, 244, 244, 0.72);
+            margin-bottom: 10px;
+        }
+
+        .achievement-extra-metrics {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .achievement-extra-metrics span {
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.09);
+            color: #ffffff;
+        }
+
+        .achievement-tag {
+            display: inline-block;
+            font-size: 11px;
+            padding: 5px 11px;
+            border-radius: 99px;
+            border: 1px solid rgba(255, 255, 255, 0.24);
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        @media (max-width: 900px) {
+            .achievements-section {
+                padding-top: 110px;
+            }
+            .achievements-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .achievements-subtitle {
+                text-align: left;
+            }
+            .achievements-list,
+            .achievements-list.has-expanded {
+                flex-direction: column;
+                gap: 16px;
+            }
+            .achievements-list.has-expanded .achievement-card,
+            .achievements-list.has-expanded .achievement-card.is-expanded,
+            .achievements-list.has-expanded .achievement-card.is-pushed-left,
+            .achievements-list.has-expanded .achievement-card.is-pushed-right {
+                flex: 1 1 auto;
+                opacity: 1;
+                transform: none;
+            }
+            .achievement-card-title {
+                white-space: normal;
+            }
+            .achievement-visual {
+                height: 136px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<main class="hero-wrapper" id="hero">
+    <div class="stage" id="stage">
+        
+        <!-- Центральное фото -->
+        <div class="hero-photo" id="photo-box">
+            <img id="hero-img" src="rrr.png" alt="Егор Рынашко Видеомонтажёр">
+        </div>
+
+        <!-- Навигация -->
+        <nav class="nav-pill" id="nav-pill">
+            <div class="nav-blob" id="nav-blob"></div>
+            <a href="#hero" class="active">Главная</a>
+            <a href="#achievements">Достижения</a>
+            <a href="#about">Обо мне</a>
+            <a href="#skills-box">Навыки</a>
+        </nav>
+
+        <!-- Верхняя кнопка связи -->
+        <a href="https://t.me/rynashko" target="_blank" class="btn-dark header-contact">Связаться</a>
+
+        <!-- Левая колонка: только VIDEO EDITOR и подпись роли -->
+        <h1 class="hero-title">
+            <span class="line"><span>Video</span></span>
+            <span class="line"><span>Editor</span></span>
+        </h1>
+
+        <div class="role-subtitle" id="about">
+            Егор Рынашко видеомонтажёр и моушн-дизайнер
+        </div>
+
+        <div class="availability-status">
+            <span></span>Открыт к новым проектам
+        </div>
+
+        <!-- Правая колонка: что делаю -->
+        <div class="right-doing">
+            <span class="label">Что делаю</span>
+            <p>Собираю динамичные Reels, Shorts и ролики для YouTube и брендов, от ритмичной склейки и хуков до финального звука</p>
+        </div>
+
+        <!-- Правая колонка: интерактивная кнопка RYNASHKO и описание навыков под ней -->
+        <div class="rynashko-widget" id="skills-box">
+            <button type="button" class="glass-nameplate-btn" id="rynashko-btn">
+                <span class="rynashko-left">
+                    <b>RYNASHKO</b>
+                    <span class="rynashko-mode-hint">Кликни, чтобы переключить навык</span>
+                </span>
+                <span class="rynashko-toggle-badge">NEXT</span>
+            </button>
+
+            <div class="skills-under-btn" id="skills-panel">
+                <div class="skills-category-title">
+                    <strong id="skill-heading">Монтаж и ритм</strong>
+                    <span id="skill-counter">01 / 03</span>
+                </div>
+                <p class="skills-desc-text" id="skill-text">
+                    Динамичные склейки, удержание внимания с первых секунд, работа с темпом кадра и таймингами под Reels, Shorts и YouTube
+                </p>
+                <div class="skills-indicators" id="skill-indicators">
+                    <span class="skill-indicator active">Монтаж</span>
+                    <span class="skill-indicator">Моушн</span>
+                    <span class="skill-indicator">Звук и цвет</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Софт внизу -->
+        <div class="software-logos">
+            <span>PREMIERE PRO</span>
+            <span>AFTER EFFECTS</span>
+            <span>DAVINCI</span>
+            <span>CAPCUT PRO</span>
+        </div>
+
+    </div>
+</main>
+
+<!-- Секция 2: Мои достижения -->
+<section class="achievements-section" id="achievements">
+    <div class="achievements-container">
+        <div class="achievements-header">
+            <h2 class="achievements-title">Мои достижения</h2>
+            <p class="achievements-subtitle">
+                Нажмите на карточку, чтобы подробнее узнать о моих достижениях
+            </p>
+        </div>
+
+        <div class="achievements-list" id="achievements-list">
+            <!-- Достижение 1 -->
+            <article class="achievement-card" tabindex="0">
+                <div class="achievement-visual">
+                    <span class="achievement-badge-num">01</span>
+                    <span class="achievement-state-hint">+</span>
+                    <div class="achievement-icon">1M+</div>
+                </div>
+                <div class="achievement-body">
+                    <h3 class="achievement-card-title">Миллионы просмотров в Reels</h3>
+                    <div class="achievement-details">
+                        <p class="achievement-card-desc">
+                            Смонтировал серию коротких вертикальных роликов с динамичным ритмом и саунд-дизайном, набравших более 1 000 000 органических просмотров
+                        </p>
+                        <div class="achievement-extra-box">
+                            <p>
+                                Проработал визуальные хуки в первые 2 секунды, ускорил темп смены планов каждые 1.5 секунды и добавил акцентные звуковые переходы для удержания зрителей в ленте.
+                            </p>
+                            <div class="achievement-extra-metrics">
+                                <span>Premiere Pro</span>
+                                <span>Sound Design</span>
+                                <span>Viral Pacing</span>
+                            </div>
+                        </div>
+                        <span class="achievement-tag">Short-form & Reels</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Достижение 2 -->
+            <article class="achievement-card" tabindex="0">
+                <div class="achievement-visual">
+                    <span class="achievement-badge-num">02</span>
+                    <span class="achievement-state-hint">+</span>
+                    <div class="achievement-icon">94%</div>
+                </div>
+                <div class="achievement-body">
+                    <h3 class="achievement-card-title">Высокая досматриваемость</h3>
+                    <div class="achievement-details">
+                        <p class="achievement-card-desc">
+                            Продуманная структура хуков, смена ракурсов и акцентная анимация текста позволили поднять удержание аудитории на ключевых участках видео
+                        </p>
+                        <div class="achievement-extra-box">
+                            <p>
+                                Анализировал графики удержания и перестраивал темп подачи так, чтобы убирать просадки внимания в середине ролика за счёт динамичной графики и смены кадров.
+                            </p>
+                            <div class="achievement-extra-metrics">
+                                <span>After Effects</span>
+                                <span>Аналитика удержания</span>
+                                <span>Кинетическая типографика</span>
+                            </div>
+                        </div>
+                        <span class="achievement-tag">Retention & Pacing</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Достижение 3 -->
+            <article class="achievement-card" tabindex="0">
+                <div class="achievement-visual">
+                    <span class="achievement-badge-num">03</span>
+                    <span class="achievement-state-hint">+</span>
+                    <div class="achievement-icon">120+</div>
+                </div>
+                <div class="achievement-body">
+                    <h3 class="achievement-card-title">120+ реализованных проектов</h3>
+                    <div class="achievement-details">
+                        <p class="achievement-card-desc">
+                            Успешно закрыл более сотни задач: от роликов для блогеров и экспертов до промо-материалов и графики в After Effects
+                        </p>
+                        <div class="achievement-extra-box">
+                            <p>
+                                Работал над экспертными видео, лайфстайл-контентом, обзорами и рекламными креативами с адаптацией под разные форматы площадок.
+                            </p>
+                            <div class="achievement-extra-metrics">
+                                <span>YouTube & Shorts</span>
+                                <span>Рекламные креативы</span>
+                                <span>Моушн-графика</span>
+                            </div>
+                        </div>
+                        <span class="achievement-tag">Production & Motion</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Достижение 4 -->
+            <article class="achievement-card" tabindex="0">
+                <div class="achievement-visual">
+                    <span class="achievement-badge-num">04</span>
+                    <span class="achievement-state-hint">+</span>
+                    <div class="achievement-icon">24h</div>
+                </div>
+                <div class="achievement-body">
+                    <h3 class="achievement-card-title">Оперативная сборка под дедлайны</h3>
+                    <div class="achievement-details">
+                        <p class="achievement-card-desc">
+                            Выстроил быстрый рабочий пайплайн в Premiere Pro и After Effects с сохранением качества звука, цвета и чистой графики в сжатые сроки
+                        </p>
+                        <div class="achievement-extra-box">
+                            <p>
+                                Использую собственные пресеты анимации, заготовки цветокоррекции и библиотеку звуковых эффектов, чтобы сдавать готовые ролики точно в срок.
+                            </p>
+                            <div class="achievement-extra-metrics">
+                                <span>DaVinci Color</span>
+                                <span>Кастомные пресеты</span>
+                                <span>Сдача в срок</span>
+                            </div>
+                        </div>
+                        <span class="achievement-tag">Fast Workflow</span>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
+
+<script>
+    // 1. Масштабирование по ширине экрана без пустых полос по бокам
+    function updateStageScale() {
+        if (window.innerWidth > 760) {
+            const widthScale = window.innerWidth / 1440;
+            document.documentElement.style.setProperty('--scale', widthScale);
+        } else {
+            document.documentElement.style.setProperty('--scale', 1);
+        }
+    }
+    window.addEventListener('resize', updateStageScale);
+    updateStageScale();
+
+    // 2. Плавный индикатор в меню навигации и переход к секциям
+    const navPill = document.getElementById('nav-pill');
+    const navBlob = document.getElementById('nav-blob');
+    const navLinks = navPill.querySelectorAll('a');
+
+    function moveBlob(activeLink) {
+        navBlob.style.width = activeLink.offsetWidth + 'px';
+        navBlob.style.transform = `translateX(${activeLink.offsetLeft - 4}px)`;
+    }
+
+    window.addEventListener('load', () => {
+        const current = navPill.querySelector('a.active');
+        if (current) moveBlob(current);
+    });
+
+    window.addEventListener('resize', () => {
+        const current = navPill.querySelector('a.active');
+        if (current) moveBlob(current);
+    });
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            const targetId = link.getAttribute('href');
+            navLinks.forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
+            moveBlob(link);
+
+            if (targetId && targetId.startsWith('#')) {
+                const targetEl = document.querySelector(targetId);
+                if (targetEl) {
+                    e.preventDefault();
+                    targetEl.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        });
+    });
+
+    // 3. Лёгкий параллакс фото за курсором
+    const heroImg = document.getElementById('hero-img');
+    window.addEventListener('mousemove', (e) => {
+        if (window.innerWidth <= 760) return;
+        const x = (e.clientX / window.innerWidth - 0.5) * -14;
+        const y = (e.clientY / window.innerHeight - 0.5) * -8;
+        heroImg.style.transform = `scale(1.03) translate(${x}px, ${y}px)`;
+    });
+
+    // 4. Интерактивный функционал только по клику на кнопку RYNASHKO
+    const skillsData = [
+        {
+            title: 'Монтаж и ритм',
+            counter: '01 / 03',
+            text: 'Динамичные склейки, удержание внимания с первых секунд, работа с темпом кадра и таймингами под Reels, Shorts и YouTube'
+        },
+        {
+            title: 'Моушн и графика',
+            counter: '02 / 03',
+            text: 'Анимация титров, трекинг, плавные переходы и акценты в After Effects, которые усиливают смысл кадра и не перегружают экран'
+        },
+        {
+            title: 'Звук и цвет',
+            counter: '03 / 03',
+            text: 'Саунд-дизайн, шумовые акценты, баланс громкости голоса и аккуратная цветокоррекция под единый стиль ролика'
+        }
+    ];
+
+    let currentSkillIndex = 0;
+    const rynashkoBtn = document.getElementById('rynashko-btn');
+    const skillHeading = document.getElementById('skill-heading');
+    const skillCounter = document.getElementById('skill-counter');
+    const skillText = document.getElementById('skill-text');
+    const skillIndicators = document.querySelectorAll('.skill-indicator');
+
+    function renderSkill(index) {
+        currentSkillIndex = index % skillsData.length;
+        const item = skillsData[currentSkillIndex];
+        skillHeading.textContent = item.title;
+        skillCounter.textContent = item.counter;
+        skillText.textContent = item.text;
+
+        skillIndicators.forEach((el, idx) => {
+            el.classList.toggle('active', idx === currentSkillIndex);
+        });
+    }
+
+    rynashkoBtn.addEventListener('click', () => {
+        renderSkill(currentSkillIndex + 1);
+    });
+
+    // 5. Раскрытие карточки с мощным сдвигом и вытеснением остальных карточек
+    const achievementsList = document.getElementById('achievements-list');
+    const achievementCards = Array.from(achievementsList.querySelectorAll('.achievement-card'));
+
+    function resetCardsState() {
+        achievementsList.classList.remove('has-expanded');
+        achievementCards.forEach(c => {
+            c.classList.remove('is-expanded', 'is-pushed-left', 'is-pushed-right');
+            const hint = c.querySelector('.achievement-state-hint');
+            if (hint) hint.textContent = '+';
+        });
+    }
+
+    achievementCards.forEach((card, targetIndex) => {
+        card.addEventListener('click', () => {
+            const wasExpanded = card.classList.contains('is-expanded');
+            resetCardsState();
+
+            if (!wasExpanded) {
+                achievementsList.classList.add('has-expanded');
+                card.classList.add('is-expanded');
+
+                const hint = card.querySelector('.achievement-state-hint');
+                if (hint) hint.textContent = '×';
+
+                achievementCards.forEach((otherCard, idx) => {
+                    if (idx < targetIndex) {
+                        otherCard.classList.add('is-pushed-left');
+                    } else if (idx > targetIndex) {
+                        otherCard.classList.add('is-pushed-right');
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
